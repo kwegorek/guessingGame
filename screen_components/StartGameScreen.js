@@ -1,38 +1,100 @@
-import React from 'react'
+import React, {useState} from 'react'
 //import to use JSX code
-import {StyleSheet, Text, View, TextInput, Button} from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Button,
+  Keyboard,
+  TouchableWithoutFeedback, Alert 
+} from 'react-native'
 import Card from '../components/Card'
 import Colors from '../constans/colors'
 import Input from '../components/Input'
 //components from react-native - core components to use
 const StartGameScreen = (props) => {
+  const [enteredValue, setEnteredValue] = useState('')
+  const [confirmed, setConfirmed] = useState(false)
+  const [selectedNumber, setSelectedNumber] = useState()
+
+  const numberInputHandler = (inputText) => {
+    //validate
+    console.log(inputText, 'input')
+    setEnteredValue(inputText.replace(/[^0-9]/g)) //validation only numbers
+  }
+  //function stored in a constant; in in a prop onCHange point to the function; feed the value back to value property on Input
+  
+  const resetInputHandler = () => {
+    
+    setEnteredValue('') //update the state
+    setConfirmed(false) 
+  }
+  //function stored in a constant; in in a prop onCHange point to the function; feed the value back to value property on Input
+  const confirmInputHandler = () => {
+    const chosenNumber = setSelectedNumber(parseInt(enteredValue)); 
+    // eslint-disable-next-line use-isnan
+    if(chosenNumber === NaN || chosenNumber <= 0 || chosenNumber > 99){
+      return ;
+    }
+
+    setConfirmed(true)
+    setEnteredValue('') //update the state 
+    setSelectedNumber(confirmed)
+  
+
+    //all batched together; u can access state from line 38
+
+  }
+
+  let confirmedOutput= ''; 
+
+  if(confirmed){
+    confirmedOutput = <Text>Chosen Number: {selectedNumber}</Text>
+  }
   return (
-    <View style={styles.screen}>
-      <Text style={styles.title}>Start a new game!</Text>
-      <Card style={styles.inputContainer}>
-        <Text>Select a Number</Text>
-        <Input style={styles.input} blurOnSubmit autoCapitalize='none'/>
-        <View style={styles.btnContainer}>
-          <View style={styles.button}>
-            <Button
-              backgroundColor={Colors.accent}
-              color={Colors.accent}
-              title="Reset"
-              onPress={() => {}}
-            />
+    <TouchableWithoutFeedback
+      onPress={() => {
+        Keyboard.dismiss()
+      }}
+    >
+      <View style={styles.screen}>
+        <Text style={styles.title}>Start a new game!</Text>
+        <Card style={styles.inputContainer}>
+          <Text>Select a Number</Text>
+          <Input
+            onChangeText={numberInputHandler}
+            value={enteredValue}
+            style={styles.input}
+            blurOnSubmit
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardType="numeric"
+            maxLength={2}
+          />
+          <View style={styles.btnContainer}>
+            <View style={styles.button}>
+              <Button
+                backgroundColor={Colors.accent}
+                color={Colors.accent}
+                title="Reset"
+                onPress={resetInputHandler}
+              />
+            </View>
+            <View>
+              <Button
+                backgroundColor={Colors.primary}
+                color={Colors.primary}
+                style={styles.button}
+                title="Confirm"
+                onPress={confirmInputHandler}
+              />
+            </View>
           </View>
-          <View>
-            <Button
-              backgroundColor={Colors.primary}
-              color={Colors.primary}
-              style={styles.button}
-              title="Confirm"
-              onPress={() => {}}
-            />
-          </View>
-        </View>
-      </Card>
-    </View>
+        </Card>
+        {confirmedOutput}
+      </View>
+    </TouchableWithoutFeedback>
   )
 }
 
