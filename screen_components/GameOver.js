@@ -13,11 +13,22 @@ const styles = StyleSheet.create({
       
     }
   });
+
   
 const  GameOver = props => {
+
+ const {userNumber,roundsNumber,onRestart} = props
+
   return (
       <View style={styles.screen}>
            <Text>Game over!</Text>
+           <Text>Number of rounds:{roundsNumber}</Text>
+           <Text>
+               Number was:{userNumber}
+           </Text>
+           <Button title='Start new game' onPress={()=>{onRestart()}}/>
+
+           
       </View>
      
  

@@ -10,6 +10,14 @@ export default function App() {
   const [userNumber, setUserNumber] = useState(); 
   const [guessRounds, setGuessRounds] = useState(0)
 
+const configureNewGameHandler = () => {
+
+  setGuessRounds(0);
+  setUserNumber(null)
+}
+
+
+
   const startGameHandler = (selectedNumber) =>{
     setUserNumber(selectedNumber)
     setGuessRounds(0)
@@ -26,13 +34,13 @@ let content = <StartGameScreen onStartGame={startGameHandler}/>
 //rendering one of two screens 
 if(userNumber && guessRounds <=0){
   content = <GameScreen userChoice={userNumber} onGameOver={gameOverHandler}/>
-}
+}//props forwarded to gameover screen
   else if (guessRounds > 0) {
     content = (
       <GameOver
         roundsNumber={guessRounds}
         userNumber={userNumber}
-        // onRestart={configureNewGameHandler}
+        onRestart={configureNewGameHandler}
       />
     );
 }
