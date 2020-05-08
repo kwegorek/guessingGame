@@ -4,17 +4,41 @@ import Header from './components/Header'
 import StartGameScreen from './screen_components/StartGameScreen'
 import GameScreen from './screen_components/GameScreen'
 import GameOver from './screen_components/GameOver'
+import * as Font from 'expo-font'
+import {AppLoading} from 'expo' //helpful for loading fonts ---> for loading assests
+
 
 export default function App() {
 
   const [userNumber, setUserNumber] = useState(); 
   const [guessRounds, setGuessRounds] = useState(0)
+  const [dataLoaded, setDataLoaded] = useState(false)
 
-const configureNewGameHandler = () => {
+
+  const configureNewGameHandler = () => {
 
   setGuessRounds(0);
   setUserNumber(null)
 }
+
+const fetchFonts = () => {
+  console.log('font')
+  return Font.loadAsync({
+    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+  });
+
+
+  //use require and map names to assign font
+  //u can manually fetchFonts() ---> not a good solution 
+}
+
+if(!dataLoaded){
+  console.log()
+
+  return <AppLoading startAsync={fetchFonts()} onFinish={()=>{setDataLoaded(true)}} onError={(err)=>console.log(err)}/> //do not render component if data not loaded 
+}
+
 
 
 

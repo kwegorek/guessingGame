@@ -82,7 +82,7 @@ const StartGameScreen = (props) => {
       <View style={styles.screen}>
         {/* <Text style={styles.title}>Start a new game!</Text> */}
         <Card style={styles.inputContainer}>
-          <Text>Select a Number</Text>
+          <Text style={styles.title}>Select a Number</Text>
           <Input
             onChangeText={numberInputHandler}
             value={enteredValue}
@@ -124,7 +124,7 @@ const StartGameScreen = (props) => {
 const styles = StyleSheet.create({
   screen: {
     flex: 1, //it gets all the available sapce
-    padding: 10, //conttent sits on the edges
+    padding: 30, //conttent sits on the edges
     alignItems: 'center', //default column //
   },
 
@@ -135,6 +135,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 20,
+    fontFamily:'open-sans-bold', //for custom font -> no bold -> export it
     marginVertical: 10,
     alignItems: 'center', //replaces marginbotom and top
   },
@@ -173,6 +174,7 @@ const styles = StyleSheet.create({
     borderColor:Colors.accent, 
     marginVertical:20, 
     alignItems:'center', //default is stretch
+    justifyContent:'center'
 
 
   }
