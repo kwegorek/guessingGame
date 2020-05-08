@@ -7,11 +7,13 @@ import {
   TextInput,
   Button,
   Keyboard,
-  TouchableWithoutFeedback, Alert 
+  TouchableWithoutFeedback,
+  Alert,
 } from 'react-native'
 import Card from '../components/Card'
 import Colors from '../constans/colors'
 import Input from '../components/Input'
+import NumberContainer from '../components/NumberContainer'
 //components from react-native - core components to use
 const StartGameScreen = (props) => {
   const [enteredValue, setEnteredValue] = useState('')
@@ -24,33 +26,52 @@ const StartGameScreen = (props) => {
     setEnteredValue(inputText.replace(/[^0-9]/g)) //validation only numbers
   }
   //function stored in a constant; in in a prop onCHange point to the function; feed the value back to value property on Input
-  
+
   const resetInputHandler = () => {
-    
     setEnteredValue('') //update the state
-    setConfirmed(false) 
+    setConfirmed(false)
   }
   //function stored in a constant; in in a prop onCHange point to the function; feed the value back to value property on Input
   const confirmInputHandler = () => {
-    const chosenNumber = setSelectedNumber(parseInt(enteredValue)); 
+    const chosenNumber = setSelectedNumber(parseInt(enteredValue))
     // eslint-disable-next-line use-isnan
-    if(chosenNumber === NaN || chosenNumber <= 0 || chosenNumber > 99){
-      return ;
+    if (isNaN(enteredValue)|| chosenNumber <= 0 || chosenNumber > 99) {
+      Alert.alert(
+        'Invalid number!, Number has to be a number between 1 and 99',
+        [{text: 'Okay', style: 'destructive', onPress: resetInputHandler}]
+      )
+      return
     }
 
     setConfirmed(true)
-    setEnteredValue('') //update the state 
-    setSelectedNumber(confirmed)
-  
+    setSelectedNumber(enteredValue)
+    setEnteredValue('') //update the state
+    Keyboard.dismiss() //dismiss the keyboard after value selected
+ 
 
     //all batched together; u can access state from line 38
-
   }
 
-  let confirmedOutput= ''; 
+  let confirmedOutput;
 
-  if(confirmed){
-    confirmedOutput = <Text>Chosen Number: {selectedNumber}</Text>
+  if (confirmed) {
+    confirmedOutput = (
+      <Card style={styles.summaryContainer}>
+         <Text>You selected:</Text>
+         <View>
+        <NumberContainer>
+          {selectedNumber}
+
+        </NumberContainer>
+        <Button onPress={()=>{}} title='START GAME'/>
+
+         </View>
+
+      </Card>
+    )
+
+    
+   
   }
   return (
     <TouchableWithoutFeedback
@@ -59,7 +80,7 @@ const StartGameScreen = (props) => {
       }}
     >
       <View style={styles.screen}>
-        <Text style={styles.title}>Start a new game!</Text>
+        {/* <Text style={styles.title}>Start a new game!</Text> */}
         <Card style={styles.inputContainer}>
           <Text>Select a Number</Text>
           <Input
@@ -92,7 +113,7 @@ const StartGameScreen = (props) => {
             </View>
           </View>
         </Card>
-        {confirmedOutput}
+        <View>{confirmedOutput}</View>
       </View>
     </TouchableWithoutFeedback>
   )
@@ -147,6 +168,14 @@ const styles = StyleSheet.create({
     width: 50,
     textAlign: 'center',
   },
+  summaryContainer: {
+    borderWidth:2, 
+    borderColor:Colors.accent, 
+    marginVertical:20, 
+    alignItems:'center', //default is stretch
+
+
+  }
 })
 
 export default StartGameScreen
