@@ -5,47 +5,46 @@ import Colors from '../constans/colors'
 import NumberContainer from '../components/NumberContainer'
 import Card from '../components/Card'
 import DefaultStyles from '../constans/default-style'
+import MainButtton from '../components/MainButton'
 
 const styles = StyleSheet.create({
-    screen: {
-        flex:1, 
-        alignItems: 'center',
-        justifyContent:'center'
-      
-    },
+  screen: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 
-    tinyLogo: {
-        width: 100,
-        height: 100,
-      },
+  tinyLogo: {
+    width: 250,
+    height: 250,
+  },
+})
 
-
-  });
-
-  
-const  GameOver = props => {
-
- const {userNumber,roundsNumber,onRestart} = props
+const GameOver = (props) => {
+  const {userNumber, roundsNumber, onRestart} = props
 
   return (
-      <View style={styles.screen}>
-           <Text >Game over!</Text>
-        
-          <Image style={styles.tinyLogo} resize='cover' source={require('../assets/success.png')}/>
+    <View style={styles.screen}>
+      <Text style={DefaultStyles.gameOverTitle}>Game over!</Text>
 
-          
-           <Text style={DefaultStyles.bodyText}>Number of rounds:{roundsNumber}</Text>
-           <Text style={DefaultStyles.bodyText}>
-               Number was:{userNumber}
-           </Text>
-           <Button title='Start new game' onPress={()=>{onRestart()}}/>
+      <Image
+        style={styles.tinyLogo}
+        resize="cover"
+        source={require('../assets/success.png')}
+      />
+      <Text style={DefaultStyles.bodyText}>
+        Number of rounds: {roundsNumber}
+      </Text>
+      <Text style={DefaultStyles.bodyText}>Number was: {userNumber}</Text>
+      <MainButtton
+        onPress={() => {
+          onRestart()
+        }}
+      >
+        START NEW GAME
+      </MainButtton>
+    </View>
+  )
+}
 
-           
-      </View>
-     
- 
-  );
-};
-
-
-export default GameOver;
+export default GameOver
