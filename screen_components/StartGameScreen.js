@@ -10,6 +10,10 @@ import {
   TouchableWithoutFeedback,
   Alert,
 } from 'react-native'
+
+import MainButton from '../components/MainButton'
+
+
 import Card from '../components/Card'
 import Colors from '../constans/colors'
 import Input from '../components/Input'
@@ -63,7 +67,7 @@ const StartGameScreen = (props) => {
           {selectedNumber}
 
         </NumberContainer>
-        <Button onPress={()=>{props.onStartGame(selectedNumber)}} title='START GAME'/>
+        <MainButton onPress={()=>{props.onStartGame(selectedNumber)}}>START GAME</MainButton>
 
          </View>
 

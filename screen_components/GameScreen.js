@@ -1,11 +1,14 @@
 import React, {useState, useRef, useEffect} from 'react'
-import {View, StyleSheet, Text, Button, Alert} from 'react-native'
+import {View, StyleSheet, Text, Button, Alert, ScrollView} from 'react-native'
 //core wrapper component
 import Colors from '../constans/colors'
 import NumberContainer from '../components/NumberContainer'
 import Card from '../components/Card'
 import GameOver from './GameOver'
 //function outside -> not rerendered
+import DefaultStyles from '../constans/default-style'
+import {Ionicons} from '@expo/vector-icons'
+import MainButton from '../components/MainButton'
 
 const genrateRandomBetwen = (min, max, exclude) => {
   min = Math.ceil(min)
@@ -21,6 +24,10 @@ const genrateRandomBetwen = (min, max, exclude) => {
 }
 
 
+const renderListItem = (value, indx, numRound) => (<View  style={styles.listItem}key={indx}>
+   <Text style={styles.listItemText}>#{numRound}</Text>
+  <Text style={styles.listItemText}>{value}</Text>
+</View>)
 
 const styles = StyleSheet.create({
   gameScreen: {
@@ -36,17 +43,49 @@ const styles = StyleSheet.create({
     width: 300,
     maxWidth: '80%',
   },
-})
+  listItem:{
+    borderColor:'black', 
+    padding:15, 
+    borderWidth:1,
+    marginVertical:10, 
+    backgroundColor:'white', 
+    flexDirection:'row', 
+    justifyContent:'space-between', 
 
-//useRef - survives rerendering
+    
+  }, 
+  list:{
+    flex:1,
+    width:'100%'
+  }, 
+
+  listItemText:{
+    paddingRight:10
+
+  }, 
+
+  listContent:{
+    felxGrow:1, //take space but keep scroll!!!!
+    alignItems:'center', 
+    justifyContent:'center'
+  }
+})
+   
 
 const GameScreen = (props) => {
+  const initialGuess = genrateRandomBetwen(1, 100, props.userChoice)
+//useRef - survives rerendering
+
   const [currentGuess, setCurrentGuess] = useState(
-    genrateRandomBetwen(1, 100, props.userChoice)
+    initialGuess
   )
   const [rounds, setRounds] = useState(0)
+
+const [guessPast, setPastGuesses] = useState([initialGuess]) //for first render - created - detachted state handling
+
   const currentLow = useRef(1)
   const currentHigh = useRef(100)
+
 
   const { userChoice, onGameOver } = props;
 
@@ -82,8 +121,9 @@ if(direction === 'lower'){
 }else {
     currentLow.current = currentGuess; 
 }
-setCurrentGuess(
-genrateRandomBetwen(currentLow.current, currentHigh.current,currentGuess ))
+
+const next = genrateRandomBetwen(currentLow.current, currentHigh.current,currentGuess )
+setCurrentGuess(next)
 
 setRounds(curRounds => 
 
@@ -93,9 +133,14 @@ setRounds(curRounds =>
 
 
 
+    setPastGuesses
+    ((curGuess => [next, ...curGuess
+     ]))
+    
+
+} //lattest state to update
 
 
-}
 
 
 
@@ -107,14 +152,29 @@ setRounds(curRounds =>
       <Text>Opponent's Guess</Text>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card styles={styles.btnContainer}>
-        <Button title="LOWER" onPress={nextGuessHandler.bind(this, 'lower')} />
+
+      <MainButton  onPress={nextGuessHandler.bind(this, 'lower')}><Ionicons name='md-remove' size={24} color='white'/></MainButton>
+      <MainButton onPress={nextGuessHandler.bind(this, 'greater')}><Ionicons name='md-add' size={24} color='white'/></MainButton>
+        {/* <Button title="LOWER" onPress={nextGuessHandler.bind(this, 'lower')} />
         <Button
           title="GREATER"
           onPress={nextGuessHandler.bind(this, 'greater')}
-        />
+        /> */}
       </Card>
+<View styles={styles.list}>
+<ScrollView contentContainerStyle={styles.listContent}>
+{guessPast.map((guess,indx) => renderListItem(guess,indx, guessPast.length-indx))}
+</ScrollView>
+
+</View>
+
     </View>
   )
 }
+
+//use funtion to have cleaner markup 
+
+
+
 
 export default GameScreen
