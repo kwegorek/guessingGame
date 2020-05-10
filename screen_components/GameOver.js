@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react'
-import {View, StyleSheet, Text, Button, Alert, Image} from 'react-native'
+import {View, StyleSheet, Text, Button, Alert, Image, Dimensions} from 'react-native'
 //core wrapper component
 import Colors from '../constans/colors'
 import NumberContainer from '../components/NumberContainer'
@@ -15,8 +15,8 @@ const styles = StyleSheet.create({
   },
 
   tinyLogo: {
-    width: 250,
-    height: 250,
+    width: Dimensions.get('window').width * 0.7,
+    height: Dimensions.get('window').width * 0.7,
   },
 })
 

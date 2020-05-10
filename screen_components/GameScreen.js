@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react'
-import {View, StyleSheet, Text, Button, Alert, ScrollView} from 'react-native'
+import {View, StyleSheet, Text, Button, Alert, ScrollView, Dimensions} from 'react-native'
 //core wrapper component
 import Colors from '../constans/colors'
 import NumberContainer from '../components/NumberContainer'
@@ -41,8 +41,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: 20,
-    width: 300,
-    maxWidth: '80%',
+    minWidth: 300,
+    maxWidth:'95%',
+    width: '80%',
   
   },
   listItem: {
@@ -57,7 +58,7 @@ const styles = StyleSheet.create({
   },
   list: {
     flex: 1,
-    width: '60%'
+    width: Dimensions.get('window').height > 500 ? '60%' : '80%'
   },
 
  
@@ -83,6 +84,16 @@ const GameScreen = (props) => {
 
   const currentLow = useRef(1)
   const currentHigh = useRef(100)
+
+
+
+  const [buttonWidth, setButtonWidth] = useState(Dimensions.get('window'))
+
+  const updateLayout = () => {
+    setButtonWidth(Dimensions.get('window').width/4)
+  }
+
+  Dimensions.addEventListener('change', updateLayout)
 
   const {userChoice, onGameOver} = props
 
@@ -122,6 +133,7 @@ const GameScreen = (props) => {
     setPastGuesses((curGuess) => [next, ...curGuess])
   } //lattest state to update
 
+  
   return (
     <View style={styles.gameScreen}>
       <Text style={DefaultStyles.title}>Opponent's Guess</Text>

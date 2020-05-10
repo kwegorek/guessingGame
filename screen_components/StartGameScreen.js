@@ -8,7 +8,7 @@ import {
   Button,
   Keyboard,
   TouchableWithoutFeedback,
-  Alert,
+  Alert,Dimensions
 } from 'react-native'
 
 import MainButton from '../components/MainButton'
@@ -133,7 +133,9 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    width: 80,
+    // width: 80,
+    width:Dimensions.get('window').width/4 //normally use window -overall width (depending how much space I need)
+
   },
   //ext fit into btn
 
@@ -148,6 +150,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 15,
     justifyContent: 'space-between',
+    marginTop: Dimensions.get('window').height > 600 ? 20: 10
   },
   inputContainer: {
     width: 300,
